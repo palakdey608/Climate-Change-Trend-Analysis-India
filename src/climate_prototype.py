@@ -33,6 +33,49 @@ def preprocess_data(df):
     # Check required columns
     for column in required_columns:
         if column not in df.columns:
+            raise ValueError(f"Missing required column: {column}")
+
+    print("\n===== DATA VALIDATION =====")
+
+    # Check for missing values
+    missing_values = df[required_columns].isnull().sum()
+    print("\nMissing values:")
+    print(missing_values)
+
+    # Check for duplicate rows
+    duplicates = df.duplicated().sum()
+    print("\nDuplicate rows:", duplicates)
+
+    # Check numeric columns
+    numeric_cols = [
+        "Year",
+        "Temperature_C",
+        "Rainfall_mm",
+        "CO2_Emissions_tonnes"
+    ]
+
+    for col in numeric_cols:
+        df[col] = pd.to_numeric(df[col], errors="coerce")
+
+    # Remove invalid rows
+    before = len(df)
+    df = df.dropna(subset=numeric_cols)
+    after = len(df)
+
+    print("\nInvalid rows removed:", before - after)
+
+    # Sort data by year
+    df = df.sort_values("Year").reset_index(drop=True)
+
+    print("Valid observations:", len(df))
+    print("Year range:", int(df["Year"].min()), "-", int(df["Year"].max()))
+
+    return df
+
+
+    # Check required columns
+    for column in required_columns:
+        if column not in df.columns:
             raise ValueError(f"Missing column: {column}")
 
     # Remove duplicate records
