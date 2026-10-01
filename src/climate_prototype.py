@@ -428,6 +428,10 @@ def main():
 
     while True:
 
+        print("\nProject: Climate Change Trend Analysis - India")
+        print("Data Period: 2000-2024")
+        print("Valid Observations:", len(df))
+        
         print("\n========== MENU ==========")
         print("1. View Dataset")
         print("2. Descriptive Statistics")
